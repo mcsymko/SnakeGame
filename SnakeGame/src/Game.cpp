@@ -19,6 +19,14 @@ void Game::initWorldBackground()
 	this->worldBackground.setTexture(this->texure);
 }
 
+void Game::initSnake()
+{
+	for (int i = 0; i < 4; ++i)
+	{
+		this->snake.push_back(Snake());
+	}
+}
+
 void Game::initFruit()
 {
 	//Setting start position of the fruit
@@ -32,6 +40,7 @@ Game::Game()
 	this->initVariables();
 	this->initWindow();
 	this->initWorldBackground();
+	this->initSnake();
 	this->initFruit();
 }
 
@@ -53,45 +62,41 @@ bool Game::gameRunning()
 void Game::updateInput()
 {
 	//Movement
-	if (this->snake[0].getMovementState() == LEFT)
+	if (this->snakeHead.getMovementState() == LEFT)
 	{
-		this->snake[0].move(-3.f, 0.f);
+		this->snakeHead.move(-1.f, 0.f);
 	}
-	else if (this->snake[0].getMovementState() == RIGHT)
+	else if (this->snakeHead.getMovementState() == RIGHT)
 	{
-		this->snake[0].move(3.f, 0.f);
+		this->snakeHead.move(1.f, 0.f);
 	}
-	else if (this->snake[0].getMovementState() == UP)
+	else if (this->snakeHead.getMovementState() == UP)
 	{
-		this->snake[0].move(0.f, -3.f);
+		this->snakeHead.move(0.f, -1.f);
 	}
-	else if (this->snake[0].getMovementState() == DOWN)
+	else if (this->snakeHead.getMovementState() == DOWN)
 	{
-		this->snake[0].move(0.f, 3.f);
+		this->snakeHead.move(0.f, 1.f);
 	}
 }
 
 void Game::updateCollision()
 {
 	//If snake touches the wall game is over
-	if (this->snake[0].getBounds().left < 0.f)
+	if (this->snakeHead.getBounds().left < 0.f)
 	{
-		this->snake[0].setPosition(0.f, this->snake[0].getBounds().top);
 		this->running = false;
 	}
-	else if (this->snake[0].getBounds().left + this->snake[0].getBounds().width > this->window.getSize().x)
+	else if (this->snakeHead.getBounds().left + this->snakeHead.getBounds().width > this->window.getSize().x)
 	{
-		this->snake[0].setPosition(this->window.getSize().x - this->snake[0].getBounds().width, this->snake[0].getBounds().top);
 		this->running = false;
 	}
-	if (this->snake[0].getBounds().top < 0.f)
+	if (this->snakeHead.getBounds().top < 0.f)
 	{
-		this->snake[0].setPosition(this->snake[0].getBounds().left, 0.f);
 		this->running = false;
 	}
-	else if (this->snake[0].getBounds().top + this->snake[0].getBounds().height > this->window.getSize().y)
+	else if (this->snakeHead.getBounds().top + this->snakeHead.getBounds().height > this->window.getSize().y)
 	{
-		this->snake[0].setPosition(this->snake[0].getBounds().left, this->window.getSize().y - this->snake[0].getBounds().height);
 		this->running = false;
 	}
 }
@@ -103,9 +108,10 @@ void Game::updateEating()
 	int correctY = this->window.getSize().y - static_cast<int>(this->fruit.getRadius() * 4 + 1);
 
 	//When snake eats fruit snake becomes bigger and fruit respawns
-	if (this->snake[0].getBounds().intersects(this->fruit.getBounds()))
+	if (this->snakeHead.getBounds().intersects(this->fruit.getBounds()))
 	{
-		this->snake.push_back(Snake(this->snake[0].getPosition().x, this->snake[0].getPosition().y));
+		this->snake.push_back(Snake());
+		std::cout << "SIZE: " << this->snake.size() << std::endl;
 
 		this->fruit.setPosition(
 			static_cast<float>(this->fruit.getRadius() * 2 + rand() % correctX),
@@ -117,8 +123,10 @@ void Game::updateTail()
 {
 	for (int i = this->snake.size(); i > 0; i--)
 	{
-		this->snake[i].setPosition(this->snake[i - 1].getPosition().x, this->snake[i - 1].getPosition().y);
+		this->snake[i].setPosition(this->snake[i - 1].getPosition());
 	}
+
+	this->snake[0].setPosition(this->snakeHead.getPosition());
 }
 
 void Game::update()
@@ -132,12 +140,12 @@ void Game::update()
 	}
 
 	if (running)
-	{
-		this->updateTail();
-		this->snake[0].updateDirection();
+	{	
+		this->snakeHead.update();
 		this->updateInput();
 		this->updateCollision();
 		this->updateEating();
+		this->updateTail();
 	}
 }
 
@@ -148,10 +156,7 @@ void Game::renderWorldBackground()
 
 void Game::renderSnake()
 {
-	for (auto& i : snake)
-	{
-		i.render(this->window);
-	}
+	this->snakeHead.render(this->window);
 }
 
 void Game::render()

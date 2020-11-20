@@ -13,11 +13,10 @@ void Snake::initVariables()
 	this->movementSpeed = 3.f;
 }
 
-Snake::Snake(float posX, float posY)
+Snake::Snake()
 {
 	this->initVariables();
 	this->initShape();
-	this->snake.setPosition(posX, posY);
 }
 
 Snake::~Snake()
@@ -30,9 +29,9 @@ const sf::FloatRect Snake::getBounds() const
 	return this->snake.getGlobalBounds();
 }
 
-void Snake::setPosition(const float X, const float Y)
+void Snake::setPosition(sf::Vector2f position)
 {
-	this->snake.setPosition(X, Y);
+	this->snake.setPosition(position);
 }
 
 const sf::Vector2f& Snake::getPosition() const

@@ -14,6 +14,7 @@ private:
 
 	//Snake
 	std::vector <Snake> snake;
+	Snake snakeHead;
 
 	//Fruit
 	Fruit fruit;
@@ -26,6 +27,7 @@ private:
 	void initVariables();
 	void initWindow();
 	void initWorldBackground();
+	void initSnake();
 	void initFruit();
 public:
 	Game();

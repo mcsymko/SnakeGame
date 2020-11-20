@@ -13,14 +13,14 @@ private:
 	void initShape();
 	void initVariables();
 public:
-	Snake(float posX, float posY);
+	Snake();
 	~Snake();
 
 	//Accessors
 	const sf::FloatRect getBounds() const;
 
 	//Modifiers
-	void setPosition(const float X, const float Y);
+	void setPosition(sf::Vector2f position);
 	const sf::Vector2f& getPosition() const;
 	const sf::Vector2f& getSize() const;
 
