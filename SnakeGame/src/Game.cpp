@@ -162,6 +162,5 @@ void Game::render()
 
 	this->renderSnake();
 	this->fruit.render(this->window);
-	this->fruit.render(this->window);
 	this->window.display();
 }
