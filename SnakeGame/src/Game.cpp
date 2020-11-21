@@ -4,6 +4,9 @@
 void Game::initVariables()
 {
 	this->running = true;
+	this->bodySize = 3;
+	this->timer = 0;
+	this->delay = 0.1;
 }
 
 void Game::initWindow()
@@ -19,14 +22,6 @@ void Game::initWorldBackground()
 	this->worldBackground.setTexture(this->texure);
 }
 
-void Game::initSnake()
-{
-	for (int i = 0; i < 4; ++i)
-	{
-		this->snake.push_back(Snake());
-	}
-}
-
 void Game::initFruit()
 {
 	//Setting start position of the fruit
@@ -40,7 +35,6 @@ Game::Game()
 	this->initVariables();
 	this->initWindow();
 	this->initWorldBackground();
-	this->initSnake();
 	this->initFruit();
 }
 
@@ -61,6 +55,15 @@ bool Game::gameRunning()
 
 void Game::updateInput()
 {
+	float time = clock.getElapsedTime().asSeconds();
+	clock.restart();
+	timer += time;
+	if (this->timer > this->delay)
+	{
+		this->timer = 0;
+		this->updateTail();
+	}
+
 	//Movement
 	if (this->snakeHead.getMovementState() == LEFT)
 	{
@@ -110,8 +113,8 @@ void Game::updateEating()
 	//When snake eats fruit snake becomes bigger and fruit respawns
 	if (this->snakeHead.getBounds().intersects(this->fruit.getBounds()))
 	{
-		this->snake.push_back(Snake());
-		std::cout << "SIZE: " << this->snake.size() << std::endl;
+		this->bodySize++;
+		std::cout << this->bodySize << std::endl;
 
 		this->fruit.setPosition(
 			static_cast<float>(this->fruit.getRadius() * 2 + rand() % correctX),
@@ -121,12 +124,12 @@ void Game::updateEating()
 
 void Game::updateTail()
 {
-	for (int i = this->snake.size(); i > 0; i--)
+	for (int i = this->bodySize; i > 0; i--)
 	{
-		this->snake[i].setPosition(this->snake[i - 1].getPosition());
+		this->snakeBody[i].setPosition(this->snakeBody[i - 1].getPosition().x, this->snakeBody[i - 1].getPosition().y);
 	}
 
-	this->snake[0].setPosition(this->snakeHead.getPosition());
+	this->snakeBody[0].setPosition(this->snakeHead.getPosition().x, this->snakeHead.getPosition().y);
 }
 
 void Game::update()
@@ -145,7 +148,6 @@ void Game::update()
 		this->updateInput();
 		this->updateCollision();
 		this->updateEating();
-		this->updateTail();
 	}
 }
 
@@ -157,6 +159,11 @@ void Game::renderWorldBackground()
 void Game::renderSnake()
 {
 	this->snakeHead.render(this->window);
+
+	for (int i = 0; i < bodySize; i++)
+	{
+		this->snakeBody[i].render(this->window);
+	}
 }
 
 void Game::render()

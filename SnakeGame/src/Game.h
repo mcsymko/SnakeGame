@@ -13,8 +13,14 @@ private:
 	bool running;
 
 	//Snake
-	std::vector <Snake> snake;
 	Snake snakeHead;
+	Snake snakeBody[100];
+	int bodySize;
+
+	//Timer
+	sf::Clock clock;
+	float timer;
+	float delay;
 
 	//Fruit
 	Fruit fruit;
@@ -27,7 +33,6 @@ private:
 	void initVariables();
 	void initWindow();
 	void initWorldBackground();
-	void initSnake();
 	void initFruit();
 public:
 	Game();

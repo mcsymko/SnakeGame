@@ -20,7 +20,7 @@ public:
 	const sf::FloatRect getBounds() const;
 
 	//Modifiers
-	void setPosition(sf::Vector2f position);
+	void setPosition(const float posX, const float posY);
 	const sf::Vector2f& getPosition() const;
 	const sf::Vector2f& getSize() const;
 
