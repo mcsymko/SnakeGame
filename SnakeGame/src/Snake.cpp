@@ -29,9 +29,9 @@ const sf::FloatRect Snake::getBounds() const
 	return this->snake.getGlobalBounds();
 }
 
-void Snake::setPosition(const float posX, const float posY)
+void Snake::setPosition(sf::Vector2f position)
 {
-	this->snake.setPosition(posX, posY);
+	this->snake.setPosition(position);
 }
 
 const sf::Vector2f& Snake::getPosition() const

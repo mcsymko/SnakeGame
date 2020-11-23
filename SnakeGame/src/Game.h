@@ -14,8 +14,7 @@ private:
 
 	//Snake
 	Snake snakeHead;
-	Snake snakeBody[100];
-	int bodySize;
+	std::vector <Snake> snakeBody;
 
 	//Timer
 	sf::Clock clock;
