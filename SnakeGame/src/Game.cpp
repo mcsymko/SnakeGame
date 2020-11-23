@@ -6,6 +6,7 @@ void Game::initVariables()
 	this->running = true;
 	this->timer = 0;
 	this->delay = 0.1f;
+	this->points = 0;
 }
 
 void Game::initWindow()
@@ -29,12 +30,22 @@ void Game::initFruit()
 		static_cast<float>(this->fruit.getRadius() * 2 + rand() % this->window.getSize().y - static_cast<int>(this->fruit.getRadius() * 4 + 1)));
 }
 
+void Game::initGUI()
+{
+	this->font.loadFromFile("Fonts/OpenSans-Regular.ttf");
+
+	this->guiText.setFont(this->font);
+	this->guiText.setFillColor(sf::Color::Black);
+	this->guiText.setCharacterSize(30);
+}
+
 Game::Game()
 {
 	this->initVariables();
 	this->initWindow();
 	this->initWorldBackground();
 	this->initFruit();
+	this->initGUI();
 }
 
 Game::~Game()
@@ -114,6 +125,8 @@ void Game::updateEating()
 	{
 		this->snakeBody.push_back(Snake());
 
+		this->points++;
+
 		this->fruit.setPosition(
 			static_cast<float>(this->fruit.getRadius() * 2 + rand() % correctX),
 			static_cast<float>(this->fruit.getRadius() * 2 + rand() % correctY));
@@ -134,6 +147,15 @@ void Game::updateTail()
 	}
 }
 
+void Game::updateGUI()
+{
+	std::stringstream ss;
+
+	ss << "Points: " << this->points;
+
+	this->guiText.setString(ss.str());
+}
+
 void Game::update()
 {
 	while (this->window.pollEvent(this->ev))
@@ -150,6 +172,7 @@ void Game::update()
 		this->updateInput();
 		this->updateCollision();
 		this->updateEating();
+		this->updateGUI();
 	}
 }
 
@@ -174,6 +197,11 @@ void Game::renderSnake()
 	}
 }
 
+void Game::renderGUI(sf::RenderTarget& target)
+{
+	target.draw(this->guiText);
+}
+
 void Game::render()
 {
 	this->window.clear();
@@ -181,6 +209,7 @@ void Game::render()
 	this->renderWorldBackground();
 	this->renderSnake();
 	this->fruit.render(this->window);
+	this->renderGUI(this->window);
 
 	this->window.display();
 }

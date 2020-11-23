@@ -23,16 +23,22 @@ private:
 
 	//Fruit
 	Fruit fruit;
+	unsigned points;
 
 	//World background
 	sf::Texture texure;
 	sf::Sprite worldBackground;
+
+	//GUI text
+	sf::Font font;
+	sf::Text guiText;
 
 	//Private functions
 	void initVariables();
 	void initWindow();
 	void initWorldBackground();
 	void initFruit();
+	void initGUI();
 public:
 	Game();
 	~Game();
@@ -47,10 +53,12 @@ public:
 	void updateCollision();
 	void updateEating();
 	void updateTail();
+	void updateGUI();
 	void update();
 
 	void renderWorldBackground();
 	void renderSnake();
+	void renderGUI(sf::RenderTarget& target);
 	void render();
 };
 
