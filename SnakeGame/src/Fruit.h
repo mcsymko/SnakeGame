@@ -1,15 +1,6 @@
 #pragma once
 class Fruit
 {
-private:
-	//Defining fruit
-	sf::CircleShape fruit;
-	int posX;
-	int posY;
-
-	//Private functions
-	void initVariables();
-	void initShape();
 public:
 	//Con/des
 	Fruit();
@@ -23,5 +14,15 @@ public:
 	//Functions
 	void update();
 	void render(sf::RenderTarget& target);
+
+private:
+	//Defining fruit
+	sf::CircleShape fruit;
+	int posX;
+	int posY;
+
+	//Private functions
+	void initVariables();
+	void initShape();
 };
 

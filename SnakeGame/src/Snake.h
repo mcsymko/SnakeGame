@@ -3,15 +3,6 @@ enum MOVEMENT_STATES { IDLE, RIGHT, LEFT, UP, DOWN };
 
 class Snake
 {
-private:
-	sf::RectangleShape snake;
-
-	//Movement
-	short MovementState;
-	float movementSpeed;
-
-	void initShape();
-	void initVariables();
 public:
 	Snake();
 	~Snake();
@@ -31,5 +22,15 @@ public:
 	void updateDirection();
 	void update();
 	void render(sf::RenderTarget& target);
+
+private:
+	sf::RectangleShape snake;
+
+	//Movement
+	short MovementState;
+	float movementSpeed;
+
+	void initShape();
+	void initVariables();
 };
 

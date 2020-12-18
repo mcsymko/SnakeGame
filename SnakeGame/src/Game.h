@@ -5,6 +5,28 @@
 
 class Game
 {
+public:
+	Game();
+	~Game();
+
+	//Accessors
+	const sf::RenderWindow& getWindow() const;
+
+	//Functions
+	bool gameRunning();
+
+	void updateInput();
+	void updateCollision();
+	void updateEating();
+	void updateTail();
+	void updateGUI();
+	void update();
+
+	void renderWorldBackground();
+	void renderSnake();
+	void renderGUI(sf::RenderTarget& target);
+	void render();
+
 private:
 	//Window
 	sf::RenderWindow window;
@@ -39,26 +61,5 @@ private:
 	void initWorldBackground();
 	void initFruit();
 	void initGUI();
-public:
-	Game();
-	~Game();
-
-	//Accessors
-	const sf::RenderWindow& getWindow() const;
-
-	//Functions
-	bool gameRunning();
-
-	void updateInput();
-	void updateCollision();
-	void updateEating();
-	void updateTail();
-	void updateGUI();
-	void update();
-
-	void renderWorldBackground();
-	void renderSnake();
-	void renderGUI(sf::RenderTarget& target);
-	void render();
 };
 
